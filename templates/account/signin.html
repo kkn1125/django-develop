@@ -1,0 +1,14 @@
+{% extends '../common/layout.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+
+{% block content %}
+    <form action="{% url 'account:signin' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-success">로그인</button>
+        <button class="btn btn-info">회원가입</button>
+    </form>
+<script src="{% static 'common/script/main.js' %}"></script>
+{% endblock %}

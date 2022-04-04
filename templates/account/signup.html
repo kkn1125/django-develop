@@ -1,0 +1,15 @@
+{% extends '../common/layout.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+
+{% block content %}
+    <form action="{% url 'account:signup' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-success">등록</button>
+        <input class="btn btn-warning" type="reset" value="초기화">
+        <button class="btn btn-danger">취소</button>
+    </form>
+<script src="{% static 'common/script/main.js' %}"></script>
+{% endblock %}
