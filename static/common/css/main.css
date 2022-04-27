@@ -1,0 +1,39 @@
+html, body { height: 100%; }
+
+body { display: flex; flex-direction: column; }
+
+#app { flex: 0 1 100%; }
+
+footer .brand { font-weight: bold; font-size: 1.5rem; text-decoration: none; color: gray; }
+
+footer a { color: gray; }
+
+.nolist { list-style: none; }
+
+.menu-list { gap: 1rem; }
+
+.part .headline { padding-bottom: .5rem; margin-bottom: .5rem; border-bottom: 3px solid #dadada; }
+
+.part .headline .title { font-size: 20px; font-weight: 700; }
+
+[ghost] { display: none; }
+
+.fs-7 { font-size: 0.75rem; }
+
+.fs-8 { font-size: 0.5rem; }
+
+.fs-9 { font-size: 0.25rem; }
+
+.fs-10 { font-size: 0rem; }
+
+.fs-11 { font-size: -0.25rem; }
+
+.fs-12 { font-size: -0.5rem; }
+
+.fs-13 { font-size: -0.75rem; }
+
+.fs-14 { font-size: -1rem; }
+
+.fs-15 { font-size: -1.25rem; }
+
+/*# sourceMappingURL=main.css.map */

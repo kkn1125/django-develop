@@ -1,0 +1,24 @@
+{% extends '../common/layout.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+{% load common_tags %}
+{% block content %}
+<div id="app">
+    <div class="container">
+        
+        {% include './message.html' %}
+        <form action="{% url 'account:signin' %}" method="post" class="mt-5" novalidate>
+            {% csrf_token %}
+            
+            {% bootstrap_form form %}
+
+            <div class="btn-group">
+                <button class="btn btn-success">로그인</button>
+                <a class="btn btn-info" href="{% url 'account:signup' %}">회원가입</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static 'common/script/main.js' %}"></script>
+{% endblock %}

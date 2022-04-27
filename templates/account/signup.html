@@ -1,0 +1,21 @@
+{% extends '../common/layout.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+
+{% block content %}
+<div id="app">
+    <div class="container">
+        <form action="{% url 'account:signup' %}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="btn-group">
+                <button class="btn btn-success">등록</button>
+                <input class="btn btn-warning" type="reset" value="초기화">
+                <a class="btn btn-danger" href="{{ request.META.HTTP_REFERER }}">이전</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static 'common/script/main.js' %}"></script>
+{% endblock %}

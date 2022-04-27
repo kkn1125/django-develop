@@ -1,0 +1,12 @@
+{% extends '../common/layout.html' %}
+{% block content %}
+{% load static %}
+{% load common_tags %}
+{% include './breadcrumb.html' %}
+<div id="app">
+    <div class="container">
+        <div id="calendar" class="mt-5"></div>
+    </div>
+</div>
+<script m="{{room|toJson}}" src="{% static '/room/enter.js' %}" type="module"></script>
+{% endblock %}

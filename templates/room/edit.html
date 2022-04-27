@@ -1,0 +1,61 @@
+{% extends '../common/layout.html' %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% load common_tags %}
+<div id="app">
+    <div class="container">
+        {% set user.id as id %}
+        {% set "master/"|add:id as masters %}
+
+        <form action="{% url 'room:edit' id=room.id %}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form|default_form:masters %}
+            <div>
+                <span class="badge text-dark">참여 인원</span>
+                <span>{{user_list|length}}</span>
+                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="modal" data-bs-target="#invite">초대</button>
+            </div>
+            <div>
+                <span class="badge text-dark">생성 일자</span>
+                <span>{{room.regdate}}</span>
+            </div>
+            <div>
+                <span class="badge text-dark">수정 일자</span>
+                <span>{{room.updates}}</span>
+            </div>
+            <button
+            class="btn btn-info mt-3"
+            type="submit">
+                📁 수정
+            </button>
+        </form>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="invite" tabindex="-1" aria-labelledby="inviteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="inviteLabel">회원 검색</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        {% for target in users %}
+        <form action="{% url 'room:invite' uid=target.pk %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="rid" value="{{room.pk}}">
+            {{target.username}} <button class="btn btn-sm btn-primary">초대</button>
+        </form>
+        {% empty %}
+        초대 가능한 회원이 없습니다.
+        {% endfor %}
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

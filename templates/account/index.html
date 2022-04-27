@@ -1,0 +1,168 @@
+{% extends '../common/layout.html' %}
+
+{% block content %}
+{% load static %}
+{% load common_tags %}
+<div id="app" class="container">
+    <div class="d-flex flex-column flex-lg-row-reverse align-items-lg-start mt-5{% if not user.is_authenticated %} h-100 justify-content-center{% endif %}" style="gap: 1rem;">
+        {% if user.is_authenticated %}
+        <div class="part border rounded-3 p-3 col-lg-4">
+            <div class="headline">
+                <span class="title">
+                    {{user.username}}님 정보
+                </span>
+            </div>
+            <div>
+                <span class="text-capitalize">id</span>
+                <span>{{user.username}}</span>
+            </div>
+            <div>
+                <span class="text-capitalize">email</span>
+                <a href="mailto:{{user.email}}">{{user.email}}</a>
+            </div>
+            <div>
+                <figure class="text-start">
+                    <blockquote class="blockquote">
+                        <p>{{user.bio}}</p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer">
+                        {{user.username}}님 <cite title="Source Title">상태 메시지</cite>
+                    </figcaption>
+                </figure>
+            </div>
+            <hr>
+            <div>
+                <span class="badge text-dark">
+                    초대 알림
+                </span>
+                <ul class="list-group list-group-flush">
+                    {% for invite in invites %}
+                    <li class="list-group-item">
+                        <span class="text-primary fs-5">
+                            <i class="bi bi-info-square-fill"></i>
+                        </span>
+                        <span class="badge bg-dark">
+                            방 제목
+                        </span>
+                        <span class="badge text-dark">
+                            {{invite.room.title|truncatechars:15}}
+                        </span>
+                        <span class="badge bg-primary">
+                            from
+                        </span>
+                        <span class="badge text-dark">
+                            {{invite.caller.username}}
+                        </span>
+                        <span class="badge bg-info">
+                            to
+                        </span>
+                        <span class="badge text-dark">
+                            {{invite.receiver.username}}
+                        </span>
+                        
+                        <span class="badge text-dark">
+                            👥 {{invite.room.pk|user_list|length}} 명
+                        </span>
+
+                        <span class="btn-group">
+                            <form action="{% url 'room:answer' uid=user.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="rid" value="{{invite.room.pk}}">
+                                <input type="hidden" name="cid" value="{{invite.caller.pk}}">
+                                <input type="hidden" name="answer" value="1">
+                                <button class="btn btn-sm btn-success">
+                                    수락
+                                </button>
+                            </form>
+                            <form action="{% url 'room:answer' uid=user.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="rid" value="{{invite.room.pk}}">
+                                <input type="hidden" name="cid" value="{{invite.caller.pk}}">
+                                <input type="hidden" name="answer" value="0">
+                                <button class="btn btn-sm btn-dark bg-opacity-50" style="border-color: gray; background-color: gray;">
+                                    거절
+                                </button>
+                            </form>
+                        </span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">초대 받지 못한 자 😥</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="part border rounded-3 p-3 col">
+            <div class="headline d-flex justify-content-between">
+                <span class="title">
+                    공유 중인 스케줄
+                </span>
+                <span>
+                    <a
+                    href="{% url 'room:create' %}"
+                    class="btn btn-sm btn-success">
+                        📁 생성
+                    </a>
+                </span>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for room in rooms %}
+                <li class="list-group-item px-0">
+                    <span class="d-flex justify-content-between">
+                        <span>
+                            <span class="fw-bold">
+                                {{room.id}}
+                            </span>
+        
+                            <span>
+                                <a href="{% url 'room:enter' id=room.id %}">{{room.title}}</a>
+                            </span>
+                        </span>
+                        <span>
+                            <time class="fs-7 me-2">
+                                {{room.regdate|date:'Y-m-d H:i'}}
+                            </time>
+                            {% if room.master.pk == user.pk %}
+                            <a href="{% url 'room:edit' id=room.pk %}" class="btn btn-sm btn-success">
+                                ⚙ 수정
+                            </a>
+                            {% endif %}
+                            <form class="d-inline-block" action="{% url 'room:out' id=room.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{user.id}}">
+                                <button class="btn btn-sm btn-dark" style="background-color: gray; border-color: gray">
+                                    🗑 나가기
+                                </button>
+                            </form>
+                        </span>
+                    </span>
+                    <span class="hover-modal">
+                        <span class="badge bg-danger">
+                            M
+                        </span>
+                            {{room.master.username}}
+                        {% define room.id|users_in_room:room.master.pk as teams %}
+                        <span class="badge bg-info">
+                            👤
+                        </span>
+                        {{teams|length|add:1}}명
+                        {% for team in teams %}
+                        {{team.user.username}}
+                        {% endfor %}
+                    </span>
+                </li>
+                {% empty %}
+                <li class="list-group-item">
+                    참여 중인 방이 없습니다 🤷‍♂️
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="alert alert-warning d-flex align-items-center">
+            로그인하시면 더 많은 서비스를 경험하실 수 있습니다.
+            <button class="btn btn-outline-success ms-3" onclick="location={% url 'account:signin' %}">Sign in</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

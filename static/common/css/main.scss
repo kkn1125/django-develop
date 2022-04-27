@@ -1,0 +1,60 @@
+html,body{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+#app {
+    flex: 0 1 100%;
+}
+
+footer {
+
+    .brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: gray;
+    }
+
+    a {
+        color: gray;
+    }
+}
+
+.nolist {
+    list-style: none;
+}
+
+.menu-list {
+    gap: 1rem;
+}
+
+.part {
+
+    .headline {
+        padding-bottom: .5rem;
+        margin-bottom: .5rem;
+        border-bottom: 3px solid rgb(218, 218, 218);
+
+        .title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+    }
+}
+
+[ghost] {
+    display: none;
+}
+
+$fs_size: 0;
+@while($fs_size<9){
+    .fs-#{$fs_size + 7} {
+        font-size: 1 - (($fs_size + 1) * 0.25) + rem;
+    }
+    $fs_size: $fs_size + 1;
+}

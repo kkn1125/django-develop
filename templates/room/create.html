@@ -1,0 +1,24 @@
+{% extends '../common/layout.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+{% load common_tags %}
+
+{% block content %}
+<div id="app">
+    <div class="container">
+        {% set user.id as id %}
+        {% set "master/"|add:id as masters %}
+
+        <form action="{% url 'room:create' %}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form|default_form:masters|set_title %}
+            <button
+            class="btn btn-info"
+            type="submit">
+                📁 생성
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

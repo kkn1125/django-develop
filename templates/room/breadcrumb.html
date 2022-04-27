@@ -1,0 +1,12 @@
+<div class="container">
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'account:index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'room:enter' id=id %}">
+                    {{id}} 번 방
+                </a>
+            </li>
+        </ol>
+    </nav>
+</div>

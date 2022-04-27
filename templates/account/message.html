@@ -1,0 +1,6 @@
+{% load common_tags %}
+{% if request.GET|has_key:'success' %}
+<div class="alert alert-success">
+    {{request.GET|select_msg}}
+</div>
+{% endif %}
